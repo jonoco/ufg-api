@@ -1,0 +1,26 @@
+{
+  "name": "Up-For-Grabs",
+  "version": "1.0.0",
+  "description": "An app to post and find items up for grabs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index",
+    "mongo": "mongod"
+  },
+  "author": "Joshua N. Cox <joshua.n.cox@gmail.com> (http://jonoco.me/)",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "1.15.0",
+    "express": "4.13.4",
+    "jwt-simple": "0.5.0",
+    "mongoose": "4.4.12",
+    "morgan": "1.7.0",
+    "nodemon": "1.9.1",
+    "passport": "0.3.2",
+    "passport-jwt": "2.0.0",
+    "passport-local": "1.0.0"
+  }
+}
