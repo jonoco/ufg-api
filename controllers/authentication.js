@@ -9,8 +9,10 @@ function tokenForUser(user) {
 
 exports.signin = function(req, res, next) {
 	// user has already had their email and pass auth'd -> give them a token
-	res.send({ token: tokenForUser(req.user) });
-
+	res.send({ 
+		token: tokenForUser(req.user),
+		username: req.body.email
+	});
 };
 
 exports.signup = function(req, res, next) {
@@ -18,7 +20,7 @@ exports.signup = function(req, res, next) {
 	const password = req.body.password;
 
 	if (!email || !password) {
-		res.status(422).send({error: 'you must provide an email and a password'});
+		return res.status(422).send({error: 'you must provide an email and a password'});
 	}
 
 	User.findOne({ email: email }, function(err, existingUser) {
@@ -38,7 +40,10 @@ exports.signup = function(req, res, next) {
 			if (err) return next(err);
 
 			// respond to req indicating user created
-			res.json({ token: tokenForUser(user) });
+			res.json({ 
+				token: tokenForUser(user),
+				username: email 
+			});
 		});
 	});
 };
