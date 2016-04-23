@@ -12,7 +12,8 @@ exports.signin = function(req, res, next) {
 	res.send({ 
 		token: tokenForUser(req.user),
 		username: req.user.email,
-		friends: req.user.friends_ids
+		friends: req.user.friends_ids,
+		id: req.user._id
 	});
 };
 
@@ -37,13 +38,14 @@ exports.signup = function(req, res, next) {
 			password: password
 		});
 
-		user.save(function(err) {
+		user.save(function(err, user) {
 			if (err) return next(err);
 
 			// respond to req indicating user created
 			res.json({ 
 				token: tokenForUser(user),
-				username: email 
+				username: email,
+				id: user._id 
 			});
 		});
 	});

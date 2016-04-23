@@ -18,6 +18,7 @@ exports.submit = function(req, res, next) {
 		description: description,
 		image: image,
 		user: req.user._id,
+		username: req.user.email,
 		taken: false
 	});
 
@@ -30,15 +31,23 @@ exports.submit = function(req, res, next) {
 
 exports.getItems = function(req, res, next) {
 	
-	Item.find({
-		taken: false,
-		user: {'$in': req.user.friends_ids}
-	}, function(err, items){
-		if (err) return next(err);
+	const options = {
+		taken: false, 
+		user: {'$in': _.concat(req.user.friends_ids, req.user._id)}
+	};
 
-		console.log('items: ', items);
+	Item.find(options, function(err, items){
+		if (err) return next(err);
 
 		res.json({ items: items });
 	});
-	
 };
+
+exports.deleteItem = function(req, res, next) {
+	
+	Item.remove({ _id: req.body.id }, function(err) {
+		if (err) return next(err);
+
+		res.status(204).send();
+	});
+}

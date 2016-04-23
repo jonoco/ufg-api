@@ -6,6 +6,7 @@ const itemSchema = new Schema({
 	description: String,
 	image: Buffer,
 	user: String,
+	username: String,
 	taken: Boolean 
 });
 

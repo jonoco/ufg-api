@@ -22,4 +22,5 @@ module.exports = function(app) {
 
 	app.post('/item', requireAuth, ItemController.submit);
 	app.get('/item', requireAuth, ItemController.getItems);
+	app.delete('/item', requireAuth, ItemController.deleteItem);
 }
