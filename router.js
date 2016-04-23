@@ -11,8 +11,10 @@ module.exports = function(app) {
 	app.get('/', function(req, res) {
 		res.send({hi: 'there'});
 	});
-
+	
+	app.get('/user', requireAuth, UserController.getUsers);
 	app.get('/user/:email', UserController.getUser);
+	app.put('/user', requireAuth, UserController.updateUser);
 
 	app.post('/signin', requireSignin, Authentication.signin);
 

@@ -1,13 +1,18 @@
 module.exports = function(options) {
 	const defaults = {
-		body: true
+		requestBody: true,
+		responseBody: true
 	};
 
 	var opt = Object.assign({}, defaults, options);
 
 	return function(req, res, next) {
-		if (opt.body) {
+		if (opt.requestBody) {
 			console.log('Request body: ' + JSON.stringify(req.body).cyan);
+		}
+		
+		if (opt.responseBody) {
+			console.log('Response body: ', res.body);
 		}
 		
 		next();

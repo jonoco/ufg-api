@@ -7,7 +7,7 @@ const router = require('./router');
 const mongoose = require('mongoose');
 const cors = require('cors');								// allow CORS for development
 const colors = require('colors');						// color in the console!
-const requestLog = require('./middlewares/request-logger');
+const logger = require('./middlewares/logger');
 
 mongoose.connect('mongodb://localhost:ufg/ufg');
 
@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost:ufg/ufg');
 app.use(morgan('dev'));
 app.use(bodyParser.json({ type: '*/*' }));
 app.use(cors());
-app.use(requestLog());
+app.use(logger());
 
 router(app);
 
