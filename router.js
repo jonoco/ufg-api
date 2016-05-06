@@ -15,6 +15,7 @@ module.exports = function(app) {
 	app.get('/user', requireAuth, UserController.getUsers);
 	app.get('/user/:email', UserController.getUser);
 	app.put('/user', requireAuth, UserController.updateUser);
+	app.put('/user/friend', requireAuth, UserController.updateFriend);
 
 	app.post('/signin', requireSignin, Authentication.signin);
 

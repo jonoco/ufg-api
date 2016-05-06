@@ -48,6 +48,6 @@ exports.deleteItem = function(req, res, next) {
 	Item.remove({ _id: req.body.id }, function(err) {
 		if (err) return next(err);
 
-		res.status(204).send();
+		res.json({ id: req.body.id });
 	});
 }

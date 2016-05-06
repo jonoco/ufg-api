@@ -14,7 +14,7 @@ mongoose.connect('mongodb://localhost:ufg/ufg');
 // app setup
 app.use(morgan('dev'));
 app.use(bodyParser.json({ type: '*/*' }));
-app.use(cors());
+app.use(cors({methods: 'GET,PUT,POST,DELETE'}));
 app.use(logger({ responseBody: false }));
 
 router(app);

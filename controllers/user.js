@@ -18,14 +18,22 @@ exports.getUsers = function(req, res, next) {
 	})
 }
 
-exports.updateUser = function(req, res, next) {
+exports.updateUser = function(req, res, next) { }
+
+/* 
+	Update friends list by adding or removing friend
+	addFriend {bool}	- if false, removes friend
+	friend {string}  	- friend to add or remove
+*/
+exports.updateFriend = function(req, res, next) {
+
+	const operator = req.body.addFriend ? '$push' : '$pull';
 
 	User.findByIdAndUpdate(req.user._id, {
-		'$push': { friends_ids: req.body.friend }
+		operator: { friends_ids: req.body.friend }
 	}, function(err, doc) {
 		if (err) return next(err);
 		
 		res.json({ friend: req.body.friend });
 	});
-
 }
