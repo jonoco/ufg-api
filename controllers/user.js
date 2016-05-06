@@ -27,11 +27,11 @@ exports.updateUser = function(req, res, next) { }
 */
 exports.updateFriend = function(req, res, next) {
 
-	const operator = req.body.addFriend ? '$push' : '$pull';
+	const operator = req.body.addFriend ? 
+									 	{'$push': { friends_ids: req.body.friend }} : 
+										{'$pull': { friends_ids: req.body.friend }};
 
-	User.findByIdAndUpdate(req.user._id, {
-		operator: { friends_ids: req.body.friend }
-	}, function(err, doc) {
+	User.findByIdAndUpdate(req.user._id, operator, function(err, doc) {
 		if (err) return next(err);
 		
 		res.json({ friend: req.body.friend });
