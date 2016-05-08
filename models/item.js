@@ -12,4 +12,4 @@ const itemSchema = new Schema({
 
 const ModelClass = mongoose.model('item', itemSchema);
 
-module.exports = ModelClass
+module.exports = ModelClass;

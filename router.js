@@ -1,6 +1,8 @@
 const UserController = require('./controllers/user');
 const ItemController = require('./controllers/item');
 const Authentication = require('./controllers/authentication');
+const MessageController = require('./controllers/message');
+
 const passportService = require('./services/passport');
 const passport = require('passport');
 
@@ -8,10 +10,6 @@ const requireAuth = passport.authenticate('jwt', { session: false }); // auth mi
 const requireSignin = passport.authenticate('local', { session: false });
 
 module.exports = function(app) {
-	app.get('/', function(req, res) {
-		res.send({hi: 'there'});
-	});
-	
 	app.get('/user', requireAuth, UserController.getUsers);
 	app.get('/user/:email', UserController.getUser);
 	app.put('/user', requireAuth, UserController.updateUser);
@@ -24,4 +22,7 @@ module.exports = function(app) {
 	app.post('/item', requireAuth, ItemController.submit);
 	app.get('/item', requireAuth, ItemController.getItems);
 	app.delete('/item', requireAuth, ItemController.deleteItem);
+
+	app.post('/message', requireAuth, MessageController.postMessage);
+	app.get('/message', requireAuth, MessageController.getMessage);								
 }
