@@ -1,9 +1,9 @@
 const passport = require('passport');
 const User = require('../models/user');
-const config = require('../config');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
+const KEY = process.env.KEY;
 
 // create local strategy
 const localOptions = { usernameField: 'email'}; // check 'email' for username
@@ -28,7 +28,7 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
 // setup options for JWT strategy
 const jwtOptions = {
 	jwtFromRequest: ExtractJwt.fromHeader('authorization'), // check header key 'authorization' for token
-	secretOrKey: config.secret
+	secretOrKey: KEY
 };
 
 // create JWT strategy

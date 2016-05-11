@@ -24,5 +24,6 @@ module.exports = function(app) {
 	app.delete('/item', requireAuth, ItemController.deleteItem);
 
 	app.post('/message', requireAuth, MessageController.postMessage);
-	app.get('/message', requireAuth, MessageController.getMessage);								
+	app.get('/message', requireAuth, MessageController.getMessage);
+	app.post('/message/accept', requireAuth, MessageController.acceptRequest);
 }

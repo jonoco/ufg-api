@@ -6,8 +6,11 @@ const MessageSchema = new Schema({
 	userFrom: String,
 	userTo: String,
 	time: Date,
-	item: String,
-	read: Boolean
+	itemID: String,
+	itemTitle: String,
+	read: Boolean,
+	type: String,
+	status: String
 });
 
 const ModelClass = mongoose.model('message', MessageSchema);

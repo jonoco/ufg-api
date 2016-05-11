@@ -1,10 +1,11 @@
 {
-  "name": "Up-For-Grabs",
+  "name": "ufg-api",
   "version": "1.0.0",
-  "description": "API for Up For Grabs client.",
+  "description": "Up For Grabs API server.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index",
+    "start": "./bin/start",
+    "dev": "./bin/dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "mongo": "mongod"
   },
