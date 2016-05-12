@@ -7,7 +7,8 @@ exports.submit = function(req, res, next) {
 
 	const title = req.body.title;
 	const description = req.body.description;
-	const image = req.body.image || null;
+	const imageURI = req.body.imageURI || null;
+	const imageType = req.body.imageType || null;
 
 	if (!title || !description) {
 		return res.status(422).send({ error: 'you must provide item details' });
@@ -16,7 +17,8 @@ exports.submit = function(req, res, next) {
 	const item = new Item({
 		title: title,
 		description: description,
-		image: image,
+		imageURI: imageURI,
+		imageType: imageType,
 		user: req.user._id,
 		username: req.user.email,
 		taken: false

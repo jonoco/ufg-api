@@ -25,5 +25,5 @@ module.exports = function(app) {
 
 	app.post('/message', requireAuth, MessageController.postMessage);
 	app.get('/message', requireAuth, MessageController.getMessage);
-	app.post('/message/accept', requireAuth, MessageController.acceptRequest);
+	app.post('/acceptRequest', requireAuth, MessageController.acceptRequest);
 }
