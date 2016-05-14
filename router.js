@@ -9,24 +9,24 @@ const passport = require('passport');
 const requireAuth = passport.authenticate('jwt', { session: false }); // auth middleware
 const requireSignin = passport.authenticate('local', { session: false });
 
-//const apiRouter = Router = require('express').Router;
+const apiRouter = require('express').Router();
 
-module.exports = function(app) {
-	app.get('/user', requireAuth, UserController.getUsers);
-	app.get('/user/:email', UserController.getUser);
-	app.put('/user', requireAuth, UserController.updateUser);
-	app.post('/user/friend', requireAuth, UserController.addFriend);
-	app.delete('/user/friend', requireAuth, UserController.removeFriend);
+apiRouter.get('/user', requireAuth, UserController.getUsers);
+apiRouter.get('/user/:email', UserController.getUser);
+apiRouter.put('/user', requireAuth, UserController.updateUser);
+apiRouter.post('/user/friend', requireAuth, UserController.addFriend);
+apiRouter.delete('/user/friend', requireAuth, UserController.removeFriend);
 
-	app.post('/signin', requireSignin, Authentication.signin);
+apiRouter.post('/signin', requireSignin, Authentication.signin);
 
-	app.post('/signup', Authentication.signup);
+apiRouter.post('/signup', Authentication.signup);
 
-	app.post('/item', requireAuth, ItemController.submit);
-	app.get('/item', requireAuth, ItemController.getItems);
-	app.delete('/item/:id', requireAuth, ItemController.deleteItem);
+apiRouter.post('/item', requireAuth, ItemController.submit);
+apiRouter.get('/item', requireAuth, ItemController.getItems);
+apiRouter.delete('/item/:id', requireAuth, ItemController.deleteItem);
 
-	app.post('/message', requireAuth, MessageController.postMessage);
-	app.get('/message', requireAuth, MessageController.getMessage);
-	app.post('/acceptRequest', requireAuth, MessageController.acceptRequest);
-}
+apiRouter.post('/message', requireAuth, MessageController.postMessage);
+apiRouter.get('/message', requireAuth, MessageController.getMessage);
+apiRouter.post('/acceptRequest', requireAuth, MessageController.acceptRequest);
+
+module.exports = apiRouter;
