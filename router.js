@@ -18,18 +18,17 @@ router.post('/user/friend', requireAuth, UserController.addFriend);
 router.delete('/user/friend', requireAuth, UserController.removeFriend);
 
 router.post('/signin', requireSignin, Authentication.signin);
-
 router.post('/signup', Authentication.signup);
 
 router.post('/item', requireAuth, ItemController.submit);
 router.get('/item', requireAuth, ItemController.getItems);
 router.delete('/item/:id', requireAuth, ItemController.deleteItem);
+router.put('/item/accept', requireAuth, ItemController.acceptRequest);
 
 router.post('/message', requireAuth, MessageController.postMessage);
 router.get('/message', requireAuth, MessageController.getMessage);
 router.get('/message/user', requireAuth, MessageController.getMessagesForUser);
 router.get('/message/user/:user', requireAuth, MessageController.getMessagesForUser);
 router.get('/message/item/:item', requireAuth, MessageController.getMessagesForItem);
-router.post('/acceptRequest', requireAuth, MessageController.acceptRequest);
 
 module.exports = router;

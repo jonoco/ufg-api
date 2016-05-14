@@ -95,3 +95,22 @@ exports.deleteItem = function(req, res, next) {
 		res.json({ id: req.params.id });
 	});
 }
+
+/*
+	update an item to taken by the provided user
+
+	returns { message: , item: }
+*/
+exports.acceptRequest = function(req, res, next) {
+	const user = req.user.email;
+	const message = req.body.itemID;
+	const takenBy = req.body.takenBy;
+
+	Item.findByIdAndUpdate(itemID, {
+		takenBy: takenBy
+	}).then(function(item) {
+		res.json({ item: updatedItem });
+	}).catch(function(err) {
+		return next(err);
+	});
+}

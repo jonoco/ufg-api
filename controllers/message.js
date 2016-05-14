@@ -93,27 +93,3 @@ exports.getMessagesForItem = function(req, res, next) {
 		res.json({ messages: messages });
 	});
 }
-
-/*
-	update an item to taken by the provided user
-
-	returns { message: , item: }
-*/
-exports.acceptRequest = function(req, res, next) {
-	const user = req.user.email;
-	const message = req.body.message;
-	var updatedItem;
-
-	Item.findByIdAndUpdate(message.itemID, {
-		taken: true
-	}).then(function(item) {
-		updatedItem = item;
-		return Message.findByIdAndUpdate(message._id, {
-			status: 'accepted'
-		});
-	}).then(function(msg) {
-		res.json({ message: msg, item: updatedItem });
-	}).catch(function(err) {
-		return next(err);
-	});
-}
