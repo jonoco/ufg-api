@@ -8,9 +8,7 @@ const MessageSchema = new Schema({
 	time: Date,
 	itemID: String,
 	itemTitle: String,
-	read: Boolean,
-	type: String,
-	status: String
+	read: Boolean
 });
 
 const ModelClass = mongoose.model('message', MessageSchema);

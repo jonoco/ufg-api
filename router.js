@@ -9,24 +9,27 @@ const passport = require('passport');
 const requireAuth = passport.authenticate('jwt', { session: false }); // auth middleware
 const requireSignin = passport.authenticate('local', { session: false });
 
-const apiRouter = require('express').Router();
+const router = require('express').Router();
 
-apiRouter.get('/user', requireAuth, UserController.getUsers);
-apiRouter.get('/user/:email', UserController.getUser);
-apiRouter.put('/user', requireAuth, UserController.updateUser);
-apiRouter.post('/user/friend', requireAuth, UserController.addFriend);
-apiRouter.delete('/user/friend', requireAuth, UserController.removeFriend);
+router.get('/user', requireAuth, UserController.getUsers);
+router.get('/user/:user', UserController.getUser);
+router.put('/user', requireAuth, UserController.updateUser);
+router.post('/user/friend', requireAuth, UserController.addFriend);
+router.delete('/user/friend', requireAuth, UserController.removeFriend);
 
-apiRouter.post('/signin', requireSignin, Authentication.signin);
+router.post('/signin', requireSignin, Authentication.signin);
 
-apiRouter.post('/signup', Authentication.signup);
+router.post('/signup', Authentication.signup);
 
-apiRouter.post('/item', requireAuth, ItemController.submit);
-apiRouter.get('/item', requireAuth, ItemController.getItems);
-apiRouter.delete('/item/:id', requireAuth, ItemController.deleteItem);
+router.post('/item', requireAuth, ItemController.submit);
+router.get('/item', requireAuth, ItemController.getItems);
+router.delete('/item/:id', requireAuth, ItemController.deleteItem);
 
-apiRouter.post('/message', requireAuth, MessageController.postMessage);
-apiRouter.get('/message', requireAuth, MessageController.getMessage);
-apiRouter.post('/acceptRequest', requireAuth, MessageController.acceptRequest);
+router.post('/message', requireAuth, MessageController.postMessage);
+router.get('/message', requireAuth, MessageController.getMessage);
+router.get('/message/user', requireAuth, MessageController.getMessagesForUser);
+router.get('/message/user/:user', requireAuth, MessageController.getMessagesForUser);
+router.get('/message/item/:item', requireAuth, MessageController.getMessagesForItem);
+router.post('/acceptRequest', requireAuth, MessageController.acceptRequest);
 
-module.exports = apiRouter;
+module.exports = router;
