@@ -12,7 +12,7 @@ exports.signin = function(req, res, next) {
 	res.send({ 
 		token: tokenForUser(req.user),
 		username: req.user.email,
-		friends: req.user.friends_ids,
+		friends: req.user.friends,
 		id: req.user._id
 	});
 };

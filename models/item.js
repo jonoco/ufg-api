@@ -6,9 +6,9 @@ const itemSchema = new Schema({
 	description: String,
 	imageURI: String,
 	imageType: String,
-	user: String,
-	username: String,
-	taken: Boolean 
+	postedBy: String,
+	takenBy: String,
+	time: Date 
 });
 
 const ModelClass = mongoose.model('item', itemSchema);

@@ -9,11 +9,14 @@ const passport = require('passport');
 const requireAuth = passport.authenticate('jwt', { session: false }); // auth middleware
 const requireSignin = passport.authenticate('local', { session: false });
 
+//const apiRouter = Router = require('express').Router;
+
 module.exports = function(app) {
 	app.get('/user', requireAuth, UserController.getUsers);
 	app.get('/user/:email', UserController.getUser);
 	app.put('/user', requireAuth, UserController.updateUser);
-	app.put('/user/friend', requireAuth, UserController.updateFriend);
+	app.post('/user/friend', requireAuth, UserController.addFriend);
+	app.delete('/user/friend', requireAuth, UserController.removeFriend);
 
 	app.post('/signin', requireSignin, Authentication.signin);
 
@@ -21,7 +24,7 @@ module.exports = function(app) {
 
 	app.post('/item', requireAuth, ItemController.submit);
 	app.get('/item', requireAuth, ItemController.getItems);
-	app.delete('/item', requireAuth, ItemController.deleteItem);
+	app.delete('/item/:id', requireAuth, ItemController.deleteItem);
 
 	app.post('/message', requireAuth, MessageController.postMessage);
 	app.get('/message', requireAuth, MessageController.getMessage);

@@ -25,15 +25,23 @@ exports.updateUser = function(req, res, next) { }
 	addFriend {bool}	- if false, removes friend
 	friend {string}  	- friend to add or remove
 */
-exports.updateFriend = function(req, res, next) {
+exports.addFriend = function(req, res, next) {
 
-	const operator = req.body.addFriend ? 
-		{'$push': { friends_ids: req.body.friend }} : 
-		{'$pull': { friends_ids: req.body.friend }};
-
-	User.findByIdAndUpdate(req.user._id, operator, function(err, doc) {
+	User.findByIdAndUpdate(req.user._id, {
+		'$push': { friends: req.body.friend }
+	}, function(err, friend) {
 		if (err) return next(err);
 		
-		res.json({ friend: req.body.friend });
+		res.json({ friend: friend });
+	});
+}
+
+exports.removeFriend = function(req, res, next) {
+	User.findByIdAndUpdate(req.user._id, {
+		'$pull': { friends: req.body.friend }
+	}, function(err, friend) {
+		if (err) return next(err);
+		
+		res.json({ friend: friend });
 	});
 }

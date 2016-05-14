@@ -17,6 +17,8 @@ app.use(bodyParser.json({ type: '*/*' }));
 app.use(cors({methods: 'GET,PUT,POST,DELETE'}));
 app.use(logger({ responseBody: false }));
 
+// set api route to version 1
+// app.use('/v1', router(app));
 router(app);
 
 // server setup
