@@ -8,7 +8,7 @@ const Item = require('../models/item');
 */
 exports.postMessage = function(req, res, next) {
 	const text 			= req.body.text;
-	const userFrom  = req.user.email;
+	const userFrom  = req.user.username;
 	const userTo 		= req.body.to;
 	const time 			= req.body.time;
 	const itemID 		= req.body.itemID;
@@ -51,7 +51,7 @@ exports.getMessage = function(req, res, next) {
 	otherwise, the currently logged in user messages are returned
 */
 exports.getMessagesForUser = function(req, res, next) {
-	const user = req.params.user || req.user.email;
+	const user = req.params.user || req.user.username;
 
 	Message.find({ 
 		$or: [{userFrom: user}, {userTo: user}]
@@ -84,8 +84,6 @@ exports.getMessagesForItem = function(req, res, next) {
 			{userFrom: user2, userTo: user1}
 		];
 	}
-
-	console.log(operator);
 
 	Message.find(operator, function(err, messages) {
 		if (err) return next(err);

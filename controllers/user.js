@@ -2,7 +2,7 @@ const User = require('../models/user');
 
 exports.getUser = function(req, res, next) {
 
-	User.findOne({ email: req.params.user }, function(err, user) {
+	User.findOne({ username: req.params.user }, function(err, user) {
 		if (err) return next(err);
 
 		res.json({ user: user });
@@ -11,7 +11,7 @@ exports.getUser = function(req, res, next) {
 
 exports.getUsers = function(req, res, next) {
 
-	User.find({}, '_id email', function(err, users) {
+	User.find({}, '_id username', function(err, users) {
 		if (err) return next(err);
 
 		res.json({ users: users });

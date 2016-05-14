@@ -8,33 +8,33 @@ function tokenForUser(user) {
 }
 
 exports.signin = function(req, res, next) {
-	// user has already had their email and pass auth'd -> give them a token
+	// user has already had their username and pass auth'd -> give them a token
 	res.send({ 
 		token: tokenForUser(req.user),
-		username: req.user.email,
+		username: req.user.username,
 		friends: req.user.friends,
 		id: req.user._id
 	});
 };
 
 exports.signup = function(req, res, next) {
-	const email = req.body.email;
+	const username = req.body.username;
 	const password = req.body.password;
 
-	if (!email || !password) {
-		return res.status(422).send({error: 'you must provide an email and a password'});
+	if (!username || !password) {
+		return res.status(422).send({error: 'you must provide an username and a password'});
 	}
 
-	User.findOne({ email: email }, function(err, existingUser) {
+	User.findOne({ username: username }, function(err, existingUser) {
 		
 		if (err) return next(err);
 
 		// if user exists -> error
-		if (existingUser) return res.status(422).send({ error: 'Email is in use' });
+		if (existingUser) return res.status(422).send({ error: 'username is in use' });
 
 		// if user not exists -> create user record
 		const user = new User({
-			email: email,
+			username: username,
 			password: password
 		});
 
@@ -44,7 +44,7 @@ exports.signup = function(req, res, next) {
 			// respond to req indicating user created
 			res.json({ 
 				token: tokenForUser(user),
-				username: email,
+				username: username,
 				id: user._id 
 			});
 		});

@@ -24,9 +24,9 @@ exports.submit = function(req, res, next) {
 		description: description,
 		imageURI: imageURI,
 		imageType: imageType,
-		postedBy: req.user.email,
+		postedBy: req.user.username,
 		takenBy: null,
-		time: new Date.getTime()
+		time: new Date().getTime()
 	});
 
 	item.save(function(err) {
@@ -102,7 +102,7 @@ exports.deleteItem = function(req, res, next) {
 	returns { message: , item: }
 */
 exports.acceptRequest = function(req, res, next) {
-	const user = req.user.email;
+	const user = req.user.username;
 	const message = req.body.itemID;
 	const takenBy = req.body.takenBy;
 

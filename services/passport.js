@@ -6,12 +6,12 @@ const LocalStrategy = require('passport-local');
 const KEY = process.env.KEY;
 
 // create local strategy
-const localOptions = { usernameField: 'email'}; // check 'email' for username
-const localLogin = new LocalStrategy(localOptions, function(email, password, done) {
+const localOptions = { usernameField: 'username'}; // check 'username' for username
+const localLogin = new LocalStrategy(localOptions, function(username, password, done) {
 
 	// verify username and password -> call done with user
 	// if not correct -> call done with false
-	User.findOne({ email: email }, function(err, user) {
+	User.findOne({ username: username }, function(err, user) {
 		if (err) return done(err);
 		if (!user) return done(null, false);
 
