@@ -23,6 +23,8 @@ router.post('/signup', Authentication.signup);
 
 router.post('/item', requireAuth, ItemController.submit);
 router.get('/item', requireAuth, ItemController.getItems);
+router.get('/item/user', requireAuth, ItemController.getUserItems);
+router.get('/item/friend', requireAuth, ItemController.getFriendItems);
 router.delete('/item/:id', requireAuth, ItemController.deleteItem);
 router.put('/item/accept', requireAuth, ItemController.acceptRequest);
 

@@ -2,6 +2,8 @@ var _ = require('lodash');
 
 const Item = require('../models/item');
 const User = require('../models/user');
+const Friend = require('../models/friend');
+const Response = require('../services/util').Response;
 
 /*
 	submit an item to be posted
@@ -39,25 +41,10 @@ exports.submit = function(req, res, next) {
 /*
 	returns all items
 
-	friends (bool) false 		- if true, only returns items by current users friends
-
 	returns { items: }
 */
 exports.getItems = function(req, res, next) {
-
-	const defaultOptions = {
-		friends: false
-	};
-
-	// create options based on the defaults and the query
-	const query = _.pick(req.query, ['friends']);
-	const options = Object.assign({}, defaultOptions, query);
-
-	// based on the options, compose the needed operator
-	const operator = {};
-	if (options.friends) { operator.postedBy = {'$in': req.user.friends} }
-
-	Item.find(operator, function(err, items){
+	Item.find({}, function(err, items){
 		if (err) return next(err);
 
 		res.json({ items: items });
@@ -65,21 +52,49 @@ exports.getItems = function(req, res, next) {
 };
 
 /*
-	returns specific user's items
+	returns all friend's items
+
+	returns { items: }
+*/
+exports.getFriendItems = function(req, res, next) {
+	const user = req.user.username;
+
+	// get all friends
+	Friend.find({ user: user })
+		.then(function(friends) {
+			if (!friends) throw new Response(200, { items: [] });
+			
+			// get all items posted by friends
+			const friendList = _.map(friends, 'friend');
+			return Item.find({ postedBy: { $in: friendList } })
+		})
+		.then(function(items) {
+			res.json({ items: items });
+		})
+		.catch(function(err) {
+			if (err instanceof Response) {
+				return res.status(err.status).json(err.body);
+			} else {
+				return next(err);
+			}
+		});
+}
+
+/*
+	returns user's items
 
 	returns { items: }
 */
 exports.getUserItems = function(req, res, next) {
-	const user = req.params.user;
-	if (!user) return res.status(422).send({ error: 'You must provide a user parameter' })
+	const user = req.user.username;
 
-	Item.find({
-		postedBy: user
-	}, function(err, items){
-		if (err) return next(err);
-
-		res.json({ items: items });
-	});	
+	Item.find({ postedBy: user })
+		.then(function(items){
+			res.json({ items: items });
+		})
+		.catch(function(err) {
+			return next(err);
+		})	
 }
 
 /*
