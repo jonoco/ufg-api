@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const User = require('../models/user');
 const Friend = require('../models/friend');
 const Response = require('../services/util').Response;
@@ -13,28 +15,84 @@ exports.getUser = function(req, res, next) {
 
 exports.getUsers = function(req, res, next) {
 
-	User.find({}, '_id username', function(err, users) {
+	User.find({}, 'username', function(err, users) {
 		if (err) return next(err);
 
 		res.json({ users: users });
 	})
 }
 
+/*
+	Returns all of user's received friend requests
+
+	returns { requests: }
+*/
+exports.getFriendRequests = function(req, res, next) {
+	const user = req.user.username;
+	var pFriends;
+
+	// find list of people who mark user as a friend
+	Friend.find({ friend: user })
+		.then(function(potentialFriends) {
+			if (_.isEmpty(potentialFriends)) throw new Response(404, { requests: [] });
+
+			pFriends = potentialFriends;
+
+			// find all of these users who the user has marked as friend
+			const users = _.map(potentialFriends, 'user');
+			return Friend.find({ user: user, friend: {$in: users} });
+		})
+		.then(function(requitedFriends) {
+			const friends = _.map(requitedFriends, 'friend');
+
+			// if pFriends is not in friends, they're a requested friend  
+			const requestedFriends = _.filter(pFriends, pFriend => {
+				return !_.includes(friends, pFriend.user);
+			});
+
+			res.json({ requests: requestedFriends });
+		})
+		.catch(function(err){ 
+			if (err instanceof Response) {
+				return res.status(err.status).json(err.body);
+			} else {
+				return next(err);
+			}
+		});
+}
+
+/*
+	Returns all mutual friends of the user
+
+	return { friends: }
+*/
 exports.getFriends = function(req, res, next) {
 	const user = req.user.username;
 
-	console.log('get friends for ', user);
+	// find list of people who mark user as a friend
+	Friend.find({ friend: user })
+		.then(function(requestingUsers) {
+			if (_.isEmpty(requestingUsers)) throw new Response(404, { friends: [] });
 
-	Friend.find({ user: user }, 'friend')
-		.then(function(friends) {
-			res.json({ friends: friends });
+			// find all people who user has marked as friends
+			const users = _.map(requestingUsers, 'user');
+			return Friend.find({ user: user, friend: {$in: users} });
 		})
-		.catch(function(err){
-			return next(err);
+		.then(function(mutualFriends) {
+			res.json({ friends: mutualFriends});
 		})
+		.catch(function(err){ 
+			if (err instanceof Response) {
+				return res.status(err.status).json(err.body);
+			} else {
+				return next(err);
+			}
+		});
 }
 
-exports.updateUser = function(req, res, next) { }
+exports.updateUser = function(req, res, next) { 
+	res.status(500).send();
+}
 
 /* 
 	Update friends list by adding or removing friend

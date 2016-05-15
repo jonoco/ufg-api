@@ -15,6 +15,7 @@ router.get('/user', requireAuth, UserController.getUsers);
 router.get('/user/username/:user', UserController.getUser);
 router.put('/user', requireAuth, UserController.updateUser);
 router.get('/user/friend', requireAuth, UserController.getFriends);
+router.get('/user/friend/requests', requireAuth, UserController.getFriendRequests);
 router.post('/user/friend', requireAuth, UserController.addFriend);
 router.delete('/user/friend', requireAuth, UserController.removeFriend);
 

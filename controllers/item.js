@@ -64,9 +64,14 @@ exports.getFriendItems = function(req, res, next) {
 		.then(function(friends) {
 			if (!friends) throw new Response(200, { items: [] });
 			
-			// get all items posted by friends
+			// get all mutual friends
 			const friendList = _.map(friends, 'friend');
-			return Item.find({ postedBy: { $in: friendList } })
+			return Friend.find({ user: { $in: friendList }, friend: user });
+		})
+		.then(function(mutualFriends) {
+			// get all items posted by mutual friends
+			const friendList = _.map(mutualFriends, 'user');
+			return Item.find({ postedBy: { $in: mutualFriends } });
 		})
 		.then(function(items) {
 			res.json({ items: items });
