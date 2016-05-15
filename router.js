@@ -12,8 +12,9 @@ const requireSignin = passport.authenticate('local', { session: false });
 const router = require('express').Router();
 
 router.get('/user', requireAuth, UserController.getUsers);
-router.get('/user/:user', UserController.getUser);
+router.get('/user/username/:user', UserController.getUser);
 router.put('/user', requireAuth, UserController.updateUser);
+router.get('/user/friend', requireAuth, UserController.getFriends);
 router.post('/user/friend', requireAuth, UserController.addFriend);
 router.delete('/user/friend', requireAuth, UserController.removeFriend);
 

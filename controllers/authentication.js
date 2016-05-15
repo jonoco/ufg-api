@@ -26,7 +26,6 @@ exports.signup = function(req, res, next) {
 	}
 
 	User.findOne({ username: username }, function(err, existingUser) {
-		
 		if (err) return next(err);
 
 		// if user exists -> error
